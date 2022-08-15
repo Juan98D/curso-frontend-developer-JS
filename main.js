@@ -3,12 +3,15 @@ const desktopMenu = document.querySelector('.desktop-menu');
 const menuHamIcon = document.querySelector('.menu');
 const mobileMenu = document.querySelector('.mobile-menu');
 const menuCarritoIcon = document.querySelector('.navbar-shopping-cart');
-const aside = document.querySelector('.product-detail');
+const shoppingCartContainer = document.querySelector('#shoppingCartContainer');
 const cardsContainer = document.querySelector('.cards-container');
+const productDetailContainer = document.querySelector('#productDetail');
+const productDetailClosedIcon = document.querySelector('.product-detail-close')
 
 navEmail.addEventListener('click', toggleDestokpMenu);
 menuHamIcon.addEventListener('click', toggleMobileMenu);
-menuCarritoIcon.addEventListener('click', toggleCarritoAside)
+menuCarritoIcon.addEventListener('click', toggleCarritoAside);
+productDetailClosedIcon.addEventListener('click', closedProductDetailAside);
 
 function toggleDestokpMenu () {
     desktopMenu.classList.toggle('inactive')
@@ -16,11 +19,13 @@ function toggleDestokpMenu () {
 
 function toggleMobileMenu () {
 
-    const isAsideClosed = aside.classList.contains('inactive');
+    const isAsideClosed = shoppingCartContainer.classList.contains('inactive');
 
     if (!isAsideClosed) {
-        aside.classList.add('inactive')
+        shoppingCartContainer.classList.add('inactive')
     }
+
+    closedProductDetailAside();
 
     mobileMenu.classList.toggle('inactive');
 }
@@ -28,6 +33,7 @@ function toggleMobileMenu () {
 function toggleCarritoAside () {
 
     const isMobileMenuClosed = mobileMenu.classList.contains('inactive');
+    const isProductDetailClosed = productDetailContainer.classList.contains('inactive');
     
     if (!isMobileMenuClosed) {
 
@@ -35,7 +41,13 @@ function toggleCarritoAside () {
         
     }
 
-    aside.classList.toggle('inactive')
+    if (!isProductDetailClosed ) {
+
+        productDetailContainer.classList.add('inactive')
+        
+    }
+
+    shoppingCartContainer.classList.toggle('inactive')
 }
 
 const productList = []
@@ -80,6 +92,18 @@ productList.push({
     img: 'https://falabella.scene7.com/is/image/FalabellaCO/22278191_2?wid=240&hei=240&qlt=70'
 })
 
+function openProductDetailAside (){
+
+    shoppingCartContainer.classList.add('inactive');
+    productDetailContainer.classList.remove('inactive');
+}
+
+
+function closedProductDetailAside () {
+    productDetailContainer.classList.add('inactive')
+}
+
+
 function rederProduct(arr){
     for (product of arr) {
         const productCard = document.createElement('div');
@@ -87,6 +111,7 @@ function rederProduct(arr){
     
         const img = document.createElement('img');
         img.setAttribute('src', product.img);
+        img.addEventListener('click', openProductDetailAside)
     
         const productInfo = document.createElement('div');
         productInfo.classList.add('product-info');
@@ -116,4 +141,4 @@ function rederProduct(arr){
     }
 }
 
-rederProduct(productList);
+rederProduct(productList)
